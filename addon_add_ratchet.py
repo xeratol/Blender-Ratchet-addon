@@ -191,8 +191,6 @@ def add_object(self, context):
     vertsLowerBaseStartIdx = len(verts)
     verts.extend(vertsLowerBase)
     
-    # todo - internality
-
     if self.internality == 'EXTERNAL':
         faces = add_faces_external(vertsLowerTeethStartIdx, self.vertPerTooth,
             vertsUpperTeethStartIdx, vertsLowerTeethStartIdx - 1,
