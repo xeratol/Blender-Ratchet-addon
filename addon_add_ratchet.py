@@ -21,7 +21,7 @@ bl_info = {
     "author": "Francis Joseph Serina",
     "version": (0, 0, 1),
     "blender": (2, 80, 0),
-    "location": "View3D > Add > Mesh > Gears > Ratchet",
+    "location": "View3D > Add > Mesh > Ratchet",
     "description": "Adds a new Ratchet Gear",
     "warning": "",
     "doc_url": "",
@@ -33,8 +33,6 @@ from bpy.types import Operator
 from bpy.props import (
     FloatProperty,
     IntProperty,
-    BoolProperty,
-    StringProperty,
     EnumProperty
 )
 from bpy_extras.object_utils import AddObjectHelper, object_data_add
@@ -218,18 +216,6 @@ class AddRatchetGear(Operator, AddObjectHelper):
     bl_label = "Add Ratchet"
     bl_options = {'REGISTER', 'UNDO', 'PRESET'}
 
-    RatchetGear: BoolProperty(name = "Ratchet",
-        default = True,
-        description = "Ratchet")
-        
-    #### change properties
-    name: StringProperty(name = "Name",
-        description = "Name")
-
-    change: BoolProperty(name = "Change",
-        default = False,
-        description = "change Gear")
-        
     numTeeth: IntProperty(
         name="Number of Teeth",
         description="Number of teeth on the gear",
@@ -255,7 +241,7 @@ class AddRatchetGear(Operator, AddObjectHelper):
     )
 
     radius: FloatProperty(name="Radius",
-        description="Radius of the gear, negative for crown gear",
+        description="Radius of the gear",
         min=0.0,
         soft_max=1000.0,
         unit='LENGTH',
@@ -302,12 +288,10 @@ class AddRatchetGear(Operator, AddObjectHelper):
         box = layout.box()
         box.prop(self, 'internality')
 
-        if self.change == False:
-            # generic transform props
-            box = layout.box()
-            box.prop(self, 'align', expand=True)
-            box.prop(self, 'location', expand=True)
-            box.prop(self, 'rotation', expand=True)
+        box = layout.box()
+        box.prop(self, 'align', expand=True)
+        box.prop(self, 'location', expand=True)
+        box.prop(self, 'rotation', expand=True)
             
     def execute(self, context):
 
@@ -325,24 +309,13 @@ def add_object_button(self, context):
         text="Ratchet")
 
 
-# This allows you to right click on a button and link to documentation
-def add_object_manual_map():
-    url_manual_prefix = "https://docs.blender.org/manual/en/latest/"
-    url_manual_mapping = (
-        ("bpy.ops.mesh.add_object", "scene_layout/object/types.html"),
-    )
-    return url_manual_prefix, url_manual_mapping
-
-
 def register():
     bpy.utils.register_class(AddRatchetGear)
-    bpy.utils.register_manual_map(add_object_manual_map)
     bpy.types.VIEW3D_MT_mesh_add.append(add_object_button)
 
 
 def unregister():
     bpy.utils.unregister_class(AddRatchetGear)
-    bpy.utils.unregister_manual_map(add_object_manual_map)
     bpy.types.VIEW3D_MT_mesh_add.remove(add_object_button)
 
 
