@@ -21,7 +21,7 @@ bl_info = {
     "author": "Francis Joseph Serina",
     "version": (0, 0, 1),
     "blender": (2, 80, 0),
-    "location": "View3D > Add > Mesh > Ratchet",
+    "location": "View3D > Add > Mesh",
     "description": "Adds a new Ratchet Gear",
     "warning": "",
     "doc_url": "",
@@ -153,7 +153,8 @@ def create_teeth(vertPerTooth, numSegments, radius, addendum, z):
     for i in range(numSegments):
         angleRad = math.radians(i * 360.0 / numSegments)
         if (i % vertPerTooth == 0):
-            vert = polar_coords(radius + addendum, angleRad, z)
+            radiusAdd = addendum
+            vert = polar_coords(radius + radiusAdd, angleRad, z)
             verts.append(vert)
         radiusAdd = ( (i % vertPerTooth ) / (vertPerTooth) ) * addendum
         vert = polar_coords(radius + radiusAdd, angleRad, z)
