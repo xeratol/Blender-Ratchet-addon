@@ -19,7 +19,7 @@
 bl_info = {
     "name": "Ratchet Gear",
     "author": "Francis Joseph Serina",
-    "version": (0, 0, 1),
+    "version": (0, 0, 2),
     "blender": (2, 80, 0),
     "location": "View3D > Add > Mesh",
     "description": "Adds a new Ratchet Gear",
@@ -208,7 +208,19 @@ def add_object(self, context):
 
     # useful for development when the mesh may be invalid.
     mesh.validate(verbose=True)
-    object_data_add(context, mesh, operator=self)
+    obj = object_data_add(context, mesh, operator=self)
+
+    vertGrp = obj.vertex_groups.new(name="Upper Teeth")
+    vertGrp.add(list(range(vertsUpperTeethStartIdx, vertsLowerTeethStartIdx)), 1.0, 'ADD')
+
+    vertGrp = obj.vertex_groups.new(name="Lower Teeth")
+    vertGrp.add(list(range(vertsLowerTeethStartIdx, vertsUpperBaseStartIdx)), 1.0, 'ADD')
+
+    vertGrp = obj.vertex_groups.new(name="Upper Base")
+    vertGrp.add(list(range(vertsUpperBaseStartIdx, vertsLowerBaseStartIdx)), 1.0, 'ADD')
+
+    vertGrp = obj.vertex_groups.new(name="Lower Base")
+    vertGrp.add(list(range(vertsLowerBaseStartIdx, len(verts))), 1.0, 'ADD')
 
 
 class AddRatchetGear(Operator, AddObjectHelper):
